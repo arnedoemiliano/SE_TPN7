@@ -1,0 +1,8 @@
+{
+    "editor.formatOnSave": true,
+    "files.associations": {
+        "chip.h": "c",
+        "digital.h": "c",
+        "bsp.h": "c"
+    },
+}

@@ -3,6 +3,7 @@
     "files.associations": {
         "chip.h": "c",
         "digital.h": "c",
-        "bsp.h": "c"
+        "bsp.h": "c",
+        "stdbool.h": "c"
     },
 }

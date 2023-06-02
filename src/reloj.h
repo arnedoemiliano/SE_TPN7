@@ -15,34 +15,40 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 SPDX-License-Identifier: MIT
 *************************************************************************************************/
 
-/************************************************************************************************
-PRUEBAS
-‣ Al inicializar el reloj está en 00:00 y con hora invalida.
-‣ Al ajustar la hora el reloj queda en hora y es válida.
-‣ Después de n ciclos de reloj la hora avanza un segundo,
-diez segundos, un minutos, diez minutos, una hora, diez
-horas y un día completo.
-‣ Fijar la hora de la alarma y consultarla.
-‣ Fijar la alarma y avanzar el reloj para que suene.
-‣ Fijar la alarma, deshabilitarla y avanzar el reloj para no
-suene.
-‣ Hacer sonar la alarma y posponerla.
-‣ Hacer sonar la alarma y cancelarla hasta el otro dia..
-*************************************************************************************************/
+#ifndef RELOJ_H
+#define RELOJ_H
 
-// el nombre del archivo debe comenzar con "test_"
-#include <unity.h>
-#include <reloj.h>
+/* === Headers files inclusions ================================================================ */
 
-// la funcion debe comenzar con "test_"
+/* === Cabecera C++ ============================================================================ */
 
-//‣ Al inicializar el reloj está en 00:00 y con hora invalida.
-void test_inicio_hora_invalida(void) {
-    static const uint8_t hora_esperada[] = {0, 0, 0, 0, 0, 0};
-    uint8_t hora[6] = {0xFF};
-    reloj_t reloj = ClockCreate(5);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-    // Estoy esperando una hora invalida o no real (ya que es la hora inicial)
-    TEST_ASSERT_FALSE(GetClockTime(reloj, hora, 6));
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(hora_esperada, hora, 6);
+/* === Public macros definitions =============================================================== */
+
+#include <stdbool.h>
+#include "stdint.h"
+
+/* === Public data type declarations =========================================================== */
+
+typedef struct reloj_s * reloj_t;
+
+/* === Public variable declarations ============================================================ */
+
+/* === Public function declarations ============================================================ */
+
+reloj_t ClockCreate(int ticks_por_segundo);
+
+bool GetClockTime(reloj_t reloj, uint8_t * hora, int size);
+
+/* === End of documentation ==================================================================== */
+
+#ifdef __cplusplus
 }
+#endif
+
+/** @} End of module definition for doxygen */
+
+#endif /* RELOJ_H */

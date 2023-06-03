@@ -24,7 +24,16 @@ SPDX-License-Identifier: MIT
 
 /* === Private data type declarations ========================================================== */
 
+typedef struct reloj_s {
+
+    uint8_t hora_actual[6];
+    bool hora_valida : 1;
+
+} reloj_s;
+
 /* === Private variable declarations =========================================================== */
+
+// uint8_t hora_actual[] = {0};
 
 /* === Private function declarations =========================================================== */
 
@@ -38,16 +47,25 @@ SPDX-License-Identifier: MIT
 
 reloj_t ClockCreate(int ticks_por_segundo) {
 
-    // reloj_t resultado = malloc(sizeof(reloj_s));
-
-    // return resultado;
+    static reloj_s self[1];
+    memset(self, 0, sizeof(self));
+    return self;
 }
 
 bool GetClockTime(reloj_t reloj, uint8_t * hora, int size) {
 
-    memset(hora, 0, size);
+    // memset(hora, 0, size);
+    memcpy(hora, reloj->hora_actual, size);
 
-    return false;
+    return reloj->hora_valida;
+}
+
+bool SetClockTime(reloj_t reloj, const uint8_t * hora_nueva, int size) {
+
+    memcpy(reloj->hora_actual, hora_nueva, size);
+    reloj->hora_valida = true; // indica que la hora actual del reloj es válida
+
+    return true; // hace falta retornar una confirmacion?
 }
 
 /* === End of documentation ==================================================================== */

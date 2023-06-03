@@ -38,11 +38,24 @@ suene.
 
 //‣ Al inicializar el reloj está en 00:00 y con hora invalida.
 void test_inicio_hora_invalida(void) {
+
     static const uint8_t hora_esperada[] = {0, 0, 0, 0, 0, 0};
     uint8_t hora[6] = {0xFF};
     reloj_t reloj = ClockCreate(5);
-
     // Estoy esperando una hora invalida o no real (ya que es la hora inicial)
     TEST_ASSERT_FALSE(GetClockTime(reloj, hora, 6));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(hora_esperada, hora, 6);
+}
+
+//‣ Al ajustar la hora el reloj queda en hora y es válida.
+
+void test_ajuste_validacion_hora(void) {
+
+    static const uint8_t hora_esperada[] = {1, 2, 3, 4, 0, 0};
+    reloj_t reloj = ClockCreate(5);
+    uint8_t hora[6];
+
+    TEST_ASSERT_TRUE(SetClockTime(reloj, hora_esperada, 4));
+    TEST_ASSERT_TRUE(GetClockTime(reloj, hora, 6));
     TEST_ASSERT_EQUAL_UINT8_ARRAY(hora_esperada, hora, 6);
 }

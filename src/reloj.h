@@ -43,6 +43,8 @@ reloj_t ClockCreate(int ticks_por_segundo);
 
 bool GetClockTime(reloj_t reloj, uint8_t * hora, int size);
 
+bool SetClockTime(reloj_t reloj, const uint8_t * hora, int size);
+
 /* === End of documentation ==================================================================== */
 
 #ifdef __cplusplus

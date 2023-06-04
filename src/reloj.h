@@ -45,6 +45,8 @@ bool GetClockTime(reloj_t reloj, uint8_t * hora, int size);
 
 bool SetClockTime(reloj_t reloj, const uint8_t * hora, int size);
 
+void RelojNuevoTick(reloj_t reloj);
+
 /* === End of documentation ==================================================================== */
 
 #ifdef __cplusplus

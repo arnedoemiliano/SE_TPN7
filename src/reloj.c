@@ -28,9 +28,10 @@ typedef struct reloj_s {
 
     uint8_t hora_actual[6];
     bool hora_valida : 1;
+    int ticks; // cantidad de interrupciones antes de aumentar un segundo
+    int tick_actual;
 
 } reloj_s;
-
 /* === Private variable declarations =========================================================== */
 
 // uint8_t hora_actual[] = {0};
@@ -49,6 +50,7 @@ reloj_t ClockCreate(int ticks_por_segundo) {
 
     static reloj_s self[1];
     memset(self, 0, sizeof(self));
+    self->ticks = ticks_por_segundo;
     return self;
 }
 
@@ -66,6 +68,16 @@ bool SetClockTime(reloj_t reloj, const uint8_t * hora_nueva, int size) {
     reloj->hora_valida = true; // indica que la hora actual del reloj es válida
 
     return true; // hace falta retornar una confirmacion?
+}
+// En principio esta funcion es la que llama el systick en cada interrupcion
+void RelojNuevoTick(reloj_t reloj) {
+
+    if (reloj->tick_actual + 1 >= reloj->ticks) {
+        reloj->hora_actual[5]++; // segundos
+        reloj->tick_actual = 0;
+    } else {
+        reloj->tick_actual++;
+    }
 }
 
 /* === End of documentation ==================================================================== */

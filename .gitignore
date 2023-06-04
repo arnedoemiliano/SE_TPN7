@@ -209,11 +209,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # ceedling
-build/artifacts
-build/gcov
-build/logs 
-build/temp
-build/test
 
 # templates
 /templates

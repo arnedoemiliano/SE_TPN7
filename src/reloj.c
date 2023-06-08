@@ -37,13 +37,41 @@ typedef struct reloj_s {
 // uint8_t hora_actual[] = {0};
 
 /* === Private function declarations =========================================================== */
-
+void NuevoSegundo(reloj_t reloj);
 /* === Public variable definitions ============================================================= */
 
 /* === Private variable definitions ============================================================ */
 
 /* === Private function implementation ========================================================= */
+void NuevoSegundo(reloj_t reloj) {
 
+    reloj->hora_actual[5]++; // incrementa en 1 los segundos
+                             // false: si se superaron las 10 horas
+
+    if (reloj->hora_actual[5] == 10) {
+        reloj->hora_actual[5] = 0;
+        reloj->hora_actual[4]++; // incrementan las decenas de segundos
+        if (reloj->hora_actual[4] == 6) {
+            reloj->hora_actual[4] = 0;
+            reloj->hora_actual[3]++; // incrementan los minutos
+            if (reloj->hora_actual[3] == 10) {
+                reloj->hora_actual[3] = 0;
+                reloj->hora_actual[2]++; // incrementan las decenas de minutos
+                if (reloj->hora_actual[2] == 6) {
+                    reloj->hora_actual[2] = 0;
+                    reloj->hora_actual[1]++; // incrementan las horas
+                    if (reloj->hora_actual[1] == 10 && reloj->hora_actual[0] < 2) {
+                        reloj->hora_actual[1] = 0;
+                        reloj->hora_actual[0]++; // incrementan las decenas
+                    } else if (reloj->hora_actual[1] == 4 && reloj->hora_actual[0] == 2) {
+                        reloj->hora_actual[1] = 0;
+                        reloj->hora_actual[0] = 0;
+                    }
+                }
+            }
+        }
+    }
+}
 /* === Public function implementation ========================================================== */
 
 reloj_t ClockCreate(int ticks_por_segundo) {
@@ -73,7 +101,7 @@ bool SetClockTime(reloj_t reloj, const uint8_t * hora_nueva, int size) {
 void RelojNuevoTick(reloj_t reloj) {
 
     if (reloj->tick_actual + 1 >= reloj->ticks) {
-        reloj->hora_actual[5]++; // segundos
+        NuevoSegundo(reloj);
         reloj->tick_actual = 0;
     } else {
         reloj->tick_actual++;

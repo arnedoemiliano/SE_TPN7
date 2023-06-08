@@ -144,3 +144,14 @@ void test_hora_avanza_un_segundo(void) {
     TEST_ASSERT_EQUAL_UINT8(hora_actual[1], hora_esperada[1] + 1); // hor
     TEST_ASSERT_EQUAL_UINT8(hora_actual[0], hora_esperada[0] + 1); // dhor
 }
+
+//‣ Fijar la hora de la alarma y consultarla.
+// asumo que la alarma nunca tendrá precision de segundos
+void test_fijar_consultar_alarma(void) {
+    static const uint8_t alarma_esperada[] = {0, 8, 0, 0};
+    uint8_t alarma[4];
+
+    TEST_ASSERT_TRUE(SetAlarmTime(reloj, alarma_esperada));
+    TEST_ASSERT_TRUE(GetAlarmTime(reloj, alarma));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(alarma, alarma_esperada, 4);
+}

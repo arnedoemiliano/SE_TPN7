@@ -30,6 +30,7 @@ typedef struct reloj_s {
     bool hora_valida : 1;
     int ticks; // cantidad de interrupciones antes de aumentar un segundo
     int tick_actual;
+    uint8_t alarma[4];
 
 } reloj_s;
 /* === Private variable declarations =========================================================== */
@@ -106,6 +107,19 @@ void RelojNuevoTick(reloj_t reloj) {
     } else {
         reloj->tick_actual++;
     }
+}
+
+bool SetAlarmTime(reloj_t reloj, const uint8_t * alarma) {
+
+    memcpy(reloj->alarma, alarma, 4);
+
+    return true;
+}
+
+bool GetAlarmTime(reloj_t reloj, uint8_t * alarma) {
+    memcpy(alarma, reloj->alarma, 4);
+
+    return true;
 }
 
 /* === End of documentation ==================================================================== */

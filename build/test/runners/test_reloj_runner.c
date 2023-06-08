@@ -13,6 +13,7 @@ extern void tearDown(void);
 extern void test_inicio_hora_invalida(void);
 extern void test_ajuste_validacion_hora(void);
 extern void test_hora_avanza_un_segundo(void);
+extern void test_fijar_consultar_alarma(void);
 
 
 /*=======Mock Management=====*/
@@ -83,6 +84,7 @@ int main(void)
   run_test(test_inicio_hora_invalida, "test_inicio_hora_invalida", 87);
   run_test(test_ajuste_validacion_hora, "test_ajuste_validacion_hora", 99);
   run_test(test_hora_avanza_un_segundo, "test_hora_avanza_un_segundo", 113);
+  run_test(test_fijar_consultar_alarma, "test_fijar_consultar_alarma", 150);
 
   return UnityEnd();
 }

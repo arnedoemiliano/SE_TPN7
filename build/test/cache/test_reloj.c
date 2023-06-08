@@ -232,44 +232,72 @@ void test_hora_avanza_un_segundo(void) {
 
 
 
+
+
     adelantar_horas(reloj, 24);
 
-    do {if ((GetClockTime(reloj, hora_actual, 6))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(138)));}} while(0);
+    do {if ((GetClockTime(reloj, hora_actual, 6))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(139)));}} while(0);
 
     UnityAssertEqualNumber((UNITY_INT)(UNITY_UINT8 )((hora_actual[5])), (UNITY_INT)(UNITY_UINT8 )((hora_esperada[5] + 1)), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(139), UNITY_DISPLAY_STYLE_UINT8);
+   ), (UNITY_UINT)(140), UNITY_DISPLAY_STYLE_UINT8);
 
     UnityAssertEqualNumber((UNITY_INT)(UNITY_UINT8 )((hora_actual[4])), (UNITY_INT)(UNITY_UINT8 )((hora_esperada[4] + 1)), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(140), UNITY_DISPLAY_STYLE_UINT8);
+   ), (UNITY_UINT)(141), UNITY_DISPLAY_STYLE_UINT8);
 
     UnityAssertEqualNumber((UNITY_INT)(UNITY_UINT8 )((hora_actual[3])), (UNITY_INT)(UNITY_UINT8 )((hora_esperada[3] + 1)), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(141), UNITY_DISPLAY_STYLE_UINT8);
+   ), (UNITY_UINT)(142), UNITY_DISPLAY_STYLE_UINT8);
 
     UnityAssertEqualNumber((UNITY_INT)(UNITY_UINT8 )((hora_actual[2])), (UNITY_INT)(UNITY_UINT8 )((hora_esperada[2] + 1)), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(142), UNITY_DISPLAY_STYLE_UINT8);
+   ), (UNITY_UINT)(143), UNITY_DISPLAY_STYLE_UINT8);
 
     UnityAssertEqualNumber((UNITY_INT)(UNITY_UINT8 )((hora_actual[1])), (UNITY_INT)(UNITY_UINT8 )((hora_esperada[1] + 1)), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(143), UNITY_DISPLAY_STYLE_UINT8);
+   ), (UNITY_UINT)(144), UNITY_DISPLAY_STYLE_UINT8);
 
     UnityAssertEqualNumber((UNITY_INT)(UNITY_UINT8 )((hora_actual[0])), (UNITY_INT)(UNITY_UINT8 )((hora_esperada[0] + 1)), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(144), UNITY_DISPLAY_STYLE_UINT8);
+   ), (UNITY_UINT)(145), UNITY_DISPLAY_STYLE_UINT8);
+
+}
+
+
+
+
+
+
+
+void test_fijar_consultar_alarma(void) {
+
+    static const uint8_t alarma_esperada[] = {0, 8, 0, 0};
+
+    uint8_t alarma[4];
+
+
+
+    do {if ((SetAlarmTime(reloj, alarma_esperada))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(154)));}} while(0);
+
+    do {if ((GetAlarmTime(reloj, alarma))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(155)));}} while(0);
+
+    UnityAssertEqualIntArray(( const void*)((alarma)), ( const void*)((alarma_esperada)), (UNITY_UINT32)((4)), (
+
+   ((void *)0)
+
+   ), (UNITY_UINT)(156), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
 
 }

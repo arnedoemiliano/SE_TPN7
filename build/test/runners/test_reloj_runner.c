@@ -14,6 +14,7 @@ extern void test_inicio_hora_invalida(void);
 extern void test_ajuste_validacion_hora(void);
 extern void test_hora_avanza_un_segundo(void);
 extern void test_fijar_consultar_alarma(void);
+extern void test_avanzar_reloj_para_alarma(void);
 
 
 /*=======Mock Management=====*/
@@ -81,10 +82,11 @@ static void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE l
 int main(void)
 {
   UnityBegin("test_reloj.c");
-  run_test(test_inicio_hora_invalida, "test_inicio_hora_invalida", 87);
-  run_test(test_ajuste_validacion_hora, "test_ajuste_validacion_hora", 99);
-  run_test(test_hora_avanza_un_segundo, "test_hora_avanza_un_segundo", 113);
-  run_test(test_fijar_consultar_alarma, "test_fijar_consultar_alarma", 150);
+  run_test(test_inicio_hora_invalida, "test_inicio_hora_invalida", 97);
+  run_test(test_ajuste_validacion_hora, "test_ajuste_validacion_hora", 109);
+  run_test(test_hora_avanza_un_segundo, "test_hora_avanza_un_segundo", 123);
+  run_test(test_fijar_consultar_alarma, "test_fijar_consultar_alarma", 159);
+  run_test(test_avanzar_reloj_para_alarma, "test_avanzar_reloj_para_alarma", 169);
 
   return UnityEnd();
 }

@@ -4,27 +4,31 @@
   :file: test_reloj.c
 :successes:
 - :test: test_inicio_hora_invalida
-  :line: 87
+  :line: 97
   :message: ''
   :unity_test_time: 0
 - :test: test_ajuste_validacion_hora
-  :line: 99
+  :line: 109
   :message: ''
   :unity_test_time: 0
 - :test: test_hora_avanza_un_segundo
-  :line: 113
+  :line: 123
   :message: ''
   :unity_test_time: 0
 - :test: test_fijar_consultar_alarma
-  :line: 150
+  :line: 159
+  :message: ''
+  :unity_test_time: 0
+- :test: test_avanzar_reloj_para_alarma
+  :line: 169
   :message: ''
   :unity_test_time: 0
 :failures: []
 :ignores: []
 :counts:
-  :total: 4
-  :passed: 4
+  :total: 5
+  :passed: 5
   :failed: 0
   :ignored: 0
 :stdout: []
-:time: 0.002352682000491768
+:time: 0.004437351999513339

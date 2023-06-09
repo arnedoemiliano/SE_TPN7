@@ -42,6 +42,9 @@ suene.
 /* === Variable definitions ==================================================================== */
 
 reloj_t reloj;
+bool alarma_activada;
+static const uint8_t hora_esperada[] = {0, 0, 0, 0, 0, 0};
+static const uint8_t alarma_esperada[] = {0, 8, 0, 0};
 
 /* === Private function implementation ========================================================= */
 
@@ -77,16 +80,23 @@ void adelantar_horas(reloj_t reloj, int horas) {
     }
 }
 
+void activar_alarma(reloj_t reloj) {
+
+    alarma_activada = true;
+}
+
 /* === Test function implementation ============================================================ */
 
 void setUp(void) {
-    reloj = ClockCreate(TICKS_PER_SECOND);
+
+    reloj = ClockCreate(TICKS_PER_SECOND, activar_alarma);
+    alarma_activada = false;
 }
 
 // Al inicializar el reloj está en 00:00 y con hora invalida.
 void test_inicio_hora_invalida(void) {
 
-    static const uint8_t hora_esperada[] = {0, 0, 0, 0, 0, 0};
+    // static const uint8_t hora_esperada[] = {0, 0, 0, 0, 0, 0};
     uint8_t hora[6] = {0xFF};
 
     // Estoy esperando una hora invalida o no real (ya que es la hora inicial)
@@ -98,7 +108,7 @@ void test_inicio_hora_invalida(void) {
 
 void test_ajuste_validacion_hora(void) {
 
-    static const uint8_t hora_esperada[] = {1, 2, 3, 4, 0, 0};
+    // static const uint8_t hora_esperada[] = {1, 2, 3, 4, 0, 0};
     uint8_t hora[6];
 
     TEST_ASSERT_TRUE(SetClockTime(reloj, hora_esperada, 4));
@@ -112,7 +122,7 @@ void test_ajuste_validacion_hora(void) {
 
 void test_hora_avanza_un_segundo(void) {
 
-    static const uint8_t hora_esperada[] = {0, 1, 0, 0, 0, 0}; // 1am
+    // static const uint8_t hora_esperada[] = {0, 1, 0, 0, 0, 0}; // 1am
     uint8_t hora_actual[6];
 
     TEST_ASSERT_TRUE(SetClockTime(reloj, hora_esperada, 4));
@@ -133,8 +143,7 @@ void test_hora_avanza_un_segundo(void) {
     TEST_ASSERT_EQUAL_UINT8(hora_actual[1], hora_esperada[1] + 1); // hor
     TEST_ASSERT_EQUAL_UINT8(hora_actual[0], hora_esperada[0] + 1); // dhor
 
-    // prueba de que pase un día
-    // debería seguir todo igual
+    // prueba de que pase un día (debería seguir todo igual)
     adelantar_horas(reloj, 24);
     TEST_ASSERT_TRUE(GetClockTime(reloj, hora_actual, 6));
     TEST_ASSERT_EQUAL_UINT8(hora_actual[5], hora_esperada[5] + 1); // seg
@@ -148,7 +157,7 @@ void test_hora_avanza_un_segundo(void) {
 //‣ Fijar la hora de la alarma y consultarla.
 // asumo que la alarma nunca tendrá precision de segundos
 void test_fijar_consultar_alarma(void) {
-    static const uint8_t alarma_esperada[] = {0, 8, 0, 0};
+
     uint8_t alarma[4];
 
     TEST_ASSERT_TRUE(SetAlarmTime(reloj, alarma_esperada));
@@ -157,15 +166,14 @@ void test_fijar_consultar_alarma(void) {
 }
 
 //‣ Fijar la alarma y avanzar el reloj para que suene.
-void avanzar_reloj_para_alarma(void) {
-
-    static const uint8_t hora_esperada[] = {0, 1, 0, 0, 0, 0};
-    static const uint8_t alarma_esperada[] = {0, 8, 0, 0};
+void test_avanzar_reloj_para_alarma(void) {
 
     TEST_ASSERT_TRUE(SetClockTime(reloj, hora_esperada, 4));
     TEST_ASSERT_TRUE(SetAlarmTime(reloj, alarma_esperada));
-
     adelantar_horas(reloj, 7);
-    // testear que se activó la alarma (que está sonando)
-    VerificarAlarma()
+    TEST_ASSERT_FALSE(alarma_activada);
+    adelantar_minutos(reloj, 59);
+    TEST_ASSERT_FALSE(alarma_activada);
+    adelantar_minutos(reloj, 1);
+    TEST_ASSERT_TRUE(alarma_activada);
 }

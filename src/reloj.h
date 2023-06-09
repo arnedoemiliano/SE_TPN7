@@ -34,12 +34,13 @@ extern "C" {
 /* === Public data type declarations =========================================================== */
 
 typedef struct reloj_s * reloj_t;
+typedef void (*callback_disparar)(reloj_t reloj); // funcion de callback que facilita el testing
 
 /* === Public variable declarations ============================================================ */
 
 /* === Public function declarations ============================================================ */
 
-reloj_t ClockCreate(int ticks_por_segundo);
+reloj_t ClockCreate(int ticks_por_segundo, callback_disparar funcion_de_disparo);
 
 bool GetClockTime(reloj_t reloj, uint8_t * hora, int size);
 
@@ -50,6 +51,8 @@ void RelojNuevoTick(reloj_t reloj);
 bool SetAlarmTime(reloj_t reloj, const uint8_t * alarma);
 
 bool GetAlarmTime(reloj_t reloj, uint8_t * alarma);
+
+void VerificarAlarma(reloj_t reloj);
 
 /* === End of documentation ==================================================================== */
 

@@ -24,14 +24,18 @@ SPDX-License-Identifier: MIT
 
 /* === Private data type declarations ========================================================== */
 
+//
+
 typedef struct reloj_s {
 
     uint8_t hora_actual[6];
     bool hora_valida : 1;
     int ticks; // cantidad de interrupciones antes de aumentar un segundo
     int tick_actual;
+    /***********************/
     uint8_t alarma[4];
-    bool alarma_activa;
+    bool alarma_activa : 1;
+    callback_disparar disparar_alarma;
 
 } reloj_s;
 /* === Private variable declarations =========================================================== */
@@ -76,11 +80,12 @@ void NuevoSegundo(reloj_t reloj) {
 }
 /* === Public function implementation ========================================================== */
 
-reloj_t ClockCreate(int ticks_por_segundo) {
+reloj_t ClockCreate(int ticks_por_segundo, callback_disparar funcion_de_disparo) {
 
     static reloj_s self[1];
     memset(self, 0, sizeof(self));
     self->ticks = ticks_por_segundo;
+    self->disparar_alarma = funcion_de_disparo;
     return self;
 }
 
@@ -104,6 +109,7 @@ void RelojNuevoTick(reloj_t reloj) {
 
     if (reloj->tick_actual + 1 >= reloj->ticks) {
         NuevoSegundo(reloj);
+        VerificarAlarma(reloj);
         reloj->tick_actual = 0;
     } else {
         reloj->tick_actual++;
@@ -113,14 +119,21 @@ void RelojNuevoTick(reloj_t reloj) {
 bool SetAlarmTime(reloj_t reloj, const uint8_t * alarma) {
 
     memcpy(reloj->alarma, alarma, 4);
-
     return true;
 }
 
 bool GetAlarmTime(reloj_t reloj, uint8_t * alarma) {
-    memcpy(alarma, reloj->alarma, 4);
 
+    memcpy(alarma, reloj->alarma, 4);
     return true;
+}
+
+void VerificarAlarma(reloj_t reloj) {
+
+    if ((memcmp(reloj->hora_actual, reloj->alarma, sizeof(reloj->alarma)) == 0) &&
+        (reloj->hora_valida)) {
+        reloj->disparar_alarma(reloj);
+    }
 }
 
 /* === End of documentation ==================================================================== */

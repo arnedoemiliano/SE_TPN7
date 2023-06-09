@@ -15,6 +15,7 @@ extern void test_ajuste_validacion_hora(void);
 extern void test_hora_avanza_un_segundo(void);
 extern void test_fijar_consultar_alarma(void);
 extern void test_avanzar_reloj_para_alarma(void);
+extern void test_deshabilitar_alarma(void);
 
 
 /*=======Mock Management=====*/
@@ -87,6 +88,7 @@ int main(void)
   run_test(test_hora_avanza_un_segundo, "test_hora_avanza_un_segundo", 123);
   run_test(test_fijar_consultar_alarma, "test_fijar_consultar_alarma", 159);
   run_test(test_avanzar_reloj_para_alarma, "test_avanzar_reloj_para_alarma", 169);
+  run_test(test_deshabilitar_alarma, "test_deshabilitar_alarma", 183);
 
   return UnityEnd();
 }

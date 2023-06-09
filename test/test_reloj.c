@@ -79,7 +79,7 @@ void adelantar_horas(reloj_t reloj, int horas) {
         adelantar_minutos(reloj, 60);
     }
 }
-
+// Prototipo de funcion para activar la alarma
 void activar_alarma(reloj_t reloj) {
 
     alarma_activada = true;
@@ -176,4 +176,19 @@ void test_avanzar_reloj_para_alarma(void) {
     TEST_ASSERT_FALSE(alarma_activada);
     adelantar_minutos(reloj, 1);
     TEST_ASSERT_TRUE(alarma_activada);
+}
+
+//‣ Fijar la alarma, deshabilitarla y avanzar el reloj para no suene.
+
+void test_deshabilitar_alarma(void) {
+
+    uint8_t alarma[4];
+
+    TEST_ASSERT_TRUE(SetClockTime(reloj, hora_esperada, 4));
+    TEST_ASSERT_TRUE(SetAlarmTime(reloj, alarma_esperada));
+    TEST_ASSERT_TRUE(GetAlarmTime(reloj, alarma));
+    DeshabilitarAlarma(reloj);
+    TEST_ASSERT_FALSE(GetAlarmTime(reloj, alarma));
+    adelantar_horas(reloj, 8);
+    TEST_ASSERT_FALSE(alarma_activada);
 }

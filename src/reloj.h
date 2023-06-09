@@ -54,6 +54,8 @@ bool GetAlarmTime(reloj_t reloj, uint8_t * alarma);
 
 void VerificarAlarma(reloj_t reloj);
 
+void DeshabilitarAlarma(reloj_t reloj);
+
 /* === End of documentation ==================================================================== */
 
 #ifdef __cplusplus

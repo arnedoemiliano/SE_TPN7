@@ -340,24 +340,50 @@ void test_avanzar_reloj_para_alarma(void) {
 
 
 
+    do {if ((SetClockTime(reloj, hora_esperada, 4))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(171)));}} while(0);
 
-
-
-
-    do {if ((SetClockTime(reloj, hora_esperada, 4))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(173)));}} while(0);
-
-    do {if ((SetAlarmTime(reloj, alarma_esperada))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(174)));}} while(0);
+    do {if ((SetAlarmTime(reloj, alarma_esperada))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(172)));}} while(0);
 
     adelantar_horas(reloj, 7);
 
-    do {if (!(alarma_activada)) {} else {UnityFail( ((" Expected FALSE Was TRUE")), (UNITY_UINT)((UNITY_UINT)(176)));}} while(0);
+    do {if (!(alarma_activada)) {} else {UnityFail( ((" Expected FALSE Was TRUE")), (UNITY_UINT)((UNITY_UINT)(174)));}} while(0);
 
     adelantar_minutos(reloj, 59);
 
-    do {if (!(alarma_activada)) {} else {UnityFail( ((" Expected FALSE Was TRUE")), (UNITY_UINT)((UNITY_UINT)(178)));}} while(0);
+    do {if (!(alarma_activada)) {} else {UnityFail( ((" Expected FALSE Was TRUE")), (UNITY_UINT)((UNITY_UINT)(176)));}} while(0);
 
     adelantar_minutos(reloj, 1);
 
-    do {if ((alarma_activada)) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(180)));}} while(0);
+    do {if ((alarma_activada)) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(178)));}} while(0);
+
+}
+
+
+
+
+
+
+
+void test_deshabilitar_alarma(void) {
+
+
+
+    uint8_t alarma[4];
+
+
+
+    do {if ((SetClockTime(reloj, hora_esperada, 4))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(187)));}} while(0);
+
+    do {if ((SetAlarmTime(reloj, alarma_esperada))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(188)));}} while(0);
+
+    do {if ((GetAlarmTime(reloj, alarma))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(189)));}} while(0);
+
+    DeshabilitarAlarma(reloj);
+
+    do {if (!(GetAlarmTime(reloj, alarma))) {} else {UnityFail( ((" Expected FALSE Was TRUE")), (UNITY_UINT)((UNITY_UINT)(191)));}} while(0);
+
+    adelantar_horas(reloj, 8);
+
+    do {if (!(alarma_activada)) {} else {UnityFail( ((" Expected FALSE Was TRUE")), (UNITY_UINT)((UNITY_UINT)(193)));}} while(0);
 
 }

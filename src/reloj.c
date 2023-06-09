@@ -34,7 +34,7 @@ typedef struct reloj_s {
     int tick_actual;
     /***********************/
     uint8_t alarma[4];
-    bool alarma_activa : 1;
+    bool alarma_habilitada : 1;
     callback_disparar disparar_alarma;
 
 } reloj_s;
@@ -119,21 +119,26 @@ void RelojNuevoTick(reloj_t reloj) {
 bool SetAlarmTime(reloj_t reloj, const uint8_t * alarma) {
 
     memcpy(reloj->alarma, alarma, 4);
+    reloj->alarma_habilitada = true;
     return true;
 }
 
 bool GetAlarmTime(reloj_t reloj, uint8_t * alarma) {
 
     memcpy(alarma, reloj->alarma, 4);
-    return true;
+    return reloj->alarma_habilitada;
 }
 
 void VerificarAlarma(reloj_t reloj) {
 
     if ((memcmp(reloj->hora_actual, reloj->alarma, sizeof(reloj->alarma)) == 0) &&
-        (reloj->hora_valida)) {
+        (reloj->hora_valida) && (reloj->alarma_habilitada)) {
         reloj->disparar_alarma(reloj);
     }
+}
+
+void DeshabilitarAlarma(reloj_t reloj) {
+    reloj->alarma_habilitada = false;
 }
 
 /* === End of documentation ==================================================================== */

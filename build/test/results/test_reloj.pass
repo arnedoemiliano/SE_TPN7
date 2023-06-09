@@ -23,12 +23,16 @@
   :line: 169
   :message: ''
   :unity_test_time: 0
+- :test: test_deshabilitar_alarma
+  :line: 183
+  :message: ''
+  :unity_test_time: 0
 :failures: []
 :ignores: []
 :counts:
-  :total: 5
-  :passed: 5
+  :total: 6
+  :passed: 6
   :failed: 0
   :ignored: 0
 :stdout: []
-:time: 0.004437351999513339
+:time: 0.00470267899800092

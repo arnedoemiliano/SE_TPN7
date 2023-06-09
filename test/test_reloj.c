@@ -155,3 +155,17 @@ void test_fijar_consultar_alarma(void) {
     TEST_ASSERT_TRUE(GetAlarmTime(reloj, alarma));
     TEST_ASSERT_EQUAL_UINT8_ARRAY(alarma, alarma_esperada, 4);
 }
+
+//‣ Fijar la alarma y avanzar el reloj para que suene.
+void avanzar_reloj_para_alarma(void) {
+
+    static const uint8_t hora_esperada[] = {0, 1, 0, 0, 0, 0};
+    static const uint8_t alarma_esperada[] = {0, 8, 0, 0};
+
+    TEST_ASSERT_TRUE(SetClockTime(reloj, hora_esperada, 4));
+    TEST_ASSERT_TRUE(SetAlarmTime(reloj, alarma_esperada));
+
+    adelantar_horas(reloj, 7);
+    // testear que se activó la alarma (que está sonando)
+    VerificarAlarma()
+}

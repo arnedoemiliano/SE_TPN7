@@ -31,6 +31,7 @@ typedef struct reloj_s {
     int ticks; // cantidad de interrupciones antes de aumentar un segundo
     int tick_actual;
     uint8_t alarma[4];
+    bool alarma_activa;
 
 } reloj_s;
 /* === Private variable declarations =========================================================== */

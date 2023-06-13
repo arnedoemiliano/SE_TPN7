@@ -80,10 +80,17 @@ void adelantar_horas(reloj_t reloj, int horas) {
     }
 }
 // Prototipo de funcion para activar la alarma
-void activar_alarma(reloj_t reloj) {
+void activar_alarma(reloj_t reloj, bool act_desact) {
 
-    alarma_activada = true;
-}
+    if (act_desact == true) {
+        alarma_activada = true;
+    } else {
+        alarma_activada = false;
+    }
+    //**********
+    // Cuando envio la funcion como parametro, la variable alarma_activada es modificada aunque no
+    // este definida en el modulo al que se la envía.
+} //**********
 
 /* === Test function implementation ============================================================ */
 
@@ -191,4 +198,26 @@ void test_deshabilitar_alarma(void) {
     TEST_ASSERT_FALSE(GetAlarmTime(reloj, alarma));
     adelantar_horas(reloj, 8);
     TEST_ASSERT_FALSE(alarma_activada);
+}
+
+//‣ Hacer sonar la alarma y posponerla.
+
+void test_activar_posponer_alarma(void) {
+
+    uint8_t alarma[4];
+    // para probar cuando se pospone y se superan las 24 hs
+    static const uint8_t hora_esperada_2[6] = {2, 3, 0, 0, 0, 0};
+    static const uint8_t alarma_esperada_2[4] = {2, 3, 5, 5};
+
+    TEST_ASSERT_TRUE(SetClockTime(reloj, hora_esperada_2, 4));
+    TEST_ASSERT_TRUE(SetAlarmTime(reloj, alarma_esperada_2));
+    TEST_ASSERT_TRUE(GetAlarmTime(reloj, alarma));
+    adelantar_minutos(reloj, 55);
+    TEST_ASSERT_TRUE(alarma_activada);
+    PosponerAlarma(reloj, 15);
+    adelantar_minutos(reloj, 3);
+    TEST_ASSERT_FALSE(alarma_activada);
+    adelantar_minutos(reloj, 12);
+    TEST_ASSERT_TRUE(alarma_activada);
+    //
 }

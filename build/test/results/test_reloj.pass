@@ -31,12 +31,16 @@
   :line: 199
   :message: ''
   :unity_test_time: 0
+- :test: test_sonar_alarma_y_cancelar
+  :line: 216
+  :message: ''
+  :unity_test_time: 0
 :failures: []
 :ignores: []
 :counts:
-  :total: 7
-  :passed: 7
+  :total: 8
+  :passed: 8
   :failed: 0
   :ignored: 0
 :stdout: []
-:time: 0.004594444000758813
+:time: 0.00516518500080565

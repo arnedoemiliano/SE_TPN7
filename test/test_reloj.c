@@ -197,14 +197,12 @@ void test_deshabilitar_alarma(void) {
 //‣ Hacer sonar la alarma y posponerla.
 
 void test_activar_posponer_alarma(void) {
-    uint8_t alarma[4];
     // para probar cuando se pospone y se superan las 24 hs
     static const uint8_t hora_esperada_2[6] = {2, 3, 0, 0, 0, 0};
     static const uint8_t alarma_esperada_2[4] = {2, 3, 5, 5};
 
     TEST_ASSERT_TRUE(SetClockTime(reloj, hora_esperada_2, 4));
     TEST_ASSERT_TRUE(SetAlarmTime(reloj, alarma_esperada_2));
-    TEST_ASSERT_TRUE(GetAlarmTime(reloj, alarma));
     adelantar_minutos(reloj, 55);
     TEST_ASSERT_TRUE(alarma_activada);
     PosponerAlarma(reloj, 15);
@@ -215,3 +213,18 @@ void test_activar_posponer_alarma(void) {
 }
 
 //‣ Hacer sonar la alarma y cancelarla hasta el otro dia.
+void test_sonar_alarma_y_cancelar(void) {
+    // para probar cuando se pospone y se superan las 24 hs
+    static const uint8_t hora_esperada_2[6] = {1, 3, 0, 0, 0, 0};
+    static const uint8_t alarma_esperada_2[4] = {1, 8, 0, 0};
+
+    TEST_ASSERT_TRUE(SetClockTime(reloj, hora_esperada_2, 4));
+    TEST_ASSERT_TRUE(SetAlarmTime(reloj, alarma_esperada_2));
+    adelantar_horas(reloj, 5);
+    TEST_ASSERT_TRUE(alarma_activada);
+    CancelarAlarma(reloj);
+    adelantar_horas(reloj, 1);
+    TEST_ASSERT_FALSE(alarma_activada);
+    adelantar_horas(reloj, 23);
+    TEST_ASSERT_TRUE(alarma_activada);
+}

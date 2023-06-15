@@ -82,6 +82,8 @@ void NuevoSegundo(reloj_t reloj) {
 
 uint32_t DataTimeASeg(uint8_t * data_time) {
 
+    // data_time debe tener 4 elementos como minimo, corregir para que no haya comportamiento
+    // indefinido si se pasaran menos elementos
     uint32_t data_time_seg = (data_time[0] * 10 * 3600) + (data_time[1] * 3600) +
                              (data_time[2] * 10 * 60) + (data_time[3] * 60);
     return data_time_seg;
@@ -139,16 +141,19 @@ bool GetAlarmTime(reloj_t reloj, uint8_t * alarma) {
 }
 
 void VerificarAlarma(reloj_t reloj) {
+    // Necesito verificar alarma solo cada minuto:
+    if ((reloj->hora_actual[4] == 0) && (reloj->hora_actual[5] == 0)) {
 
-    // Convierto hora_actual y alarma a segundos, sumo el snooze a alarma y comparo.
-    uint32_t hora_actual = DataTimeASeg(reloj->hora_actual);
-    uint32_t alarma_actual = DataTimeASeg(reloj->alarma);
-    uint32_t nueva_alarma = alarma_actual + reloj->snooze_offset;
-    if (nueva_alarma >= 86400) {
-        nueva_alarma -= 86400;
-    }
-    if ((hora_actual == nueva_alarma) & (reloj->alarma_habilitada)) {
-        reloj->disparar_alarma(reloj, true);
+        // Convierto hora_actual y alarma a segundos, sumo el snooze a alarma y comparo.
+        uint32_t hora_actual = DataTimeASeg(reloj->hora_actual);
+        uint32_t alarma_actual = DataTimeASeg(reloj->alarma);
+        uint32_t nueva_alarma = alarma_actual + reloj->snooze_offset;
+        if (nueva_alarma >= 86400) {
+            nueva_alarma -= 86400;
+        }
+        if ((hora_actual == nueva_alarma) & (reloj->alarma_habilitada)) {
+            reloj->disparar_alarma(reloj, true);
+        }
     }
 }
 
@@ -166,6 +171,7 @@ void PosponerAlarma(reloj_t reloj, uint8_t minutos) {
 
 void CancelarAlarma(reloj_t reloj) {
     reloj->snooze_offset = 0;
+    reloj->disparar_alarma(reloj, false);
 }
 
 /* === End of documentation ==================================================================== */

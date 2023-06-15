@@ -34,7 +34,7 @@ typedef struct reloj_s {
     uint8_t alarma[4];
     bool alarma_habilitada : 1;
     callback_disparar disparar_alarma;
-    uint32_t snooze_offset;
+    uint32_t snooze_offset; // tiempo que se suma a alarma al momento de compararse con hora_actual
 
 } reloj_s;
 /* === Private variable declarations =========================================================== */
@@ -79,7 +79,7 @@ void NuevoSegundo(reloj_t reloj) {
         }
     }
 }
-
+// Convierte cualquier array de 4 bytes a un entero sin signo
 uint32_t DataTimeASeg(uint8_t * data_time) {
 
     // data_time debe tener 4 elementos como minimo, corregir para que no haya comportamiento
@@ -140,6 +140,8 @@ bool GetAlarmTime(reloj_t reloj, uint8_t * alarma) {
     return reloj->alarma_habilitada;
 }
 
+// La funcion pasa hora_actual y alarma a segundos, esto se hace para facilitar el offset de tiempo
+// que se agrega cuando se pospone la alarma, y compara cada minuto si hay coincidencia.
 void VerificarAlarma(reloj_t reloj) {
     // Necesito verificar alarma solo cada minuto:
     if ((reloj->hora_actual[4] == 0) && (reloj->hora_actual[5] == 0)) {
@@ -148,6 +150,8 @@ void VerificarAlarma(reloj_t reloj) {
         uint32_t hora_actual = DataTimeASeg(reloj->hora_actual);
         uint32_t alarma_actual = DataTimeASeg(reloj->alarma);
         uint32_t nueva_alarma = alarma_actual + reloj->snooze_offset;
+
+        // Verifico que nueva_alarma no supere las 24 horas
         if (nueva_alarma >= 86400) {
             nueva_alarma -= 86400;
         }

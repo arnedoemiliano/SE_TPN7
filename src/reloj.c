@@ -24,8 +24,6 @@ SPDX-License-Identifier: MIT
 
 /* === Private data type declarations ========================================================== */
 
-//
-
 typedef struct reloj_s {
 
     uint8_t hora_actual[6];
@@ -36,6 +34,7 @@ typedef struct reloj_s {
     uint8_t alarma[4];
     bool alarma_habilitada : 1;
     callback_disparar disparar_alarma;
+    uint32_t snooze_offset;
 
 } reloj_s;
 /* === Private variable declarations =========================================================== */
@@ -44,6 +43,8 @@ typedef struct reloj_s {
 
 /* === Private function declarations =========================================================== */
 void NuevoSegundo(reloj_t reloj);
+
+uint32_t DataTimeASeg(uint8_t * data_time);
 /* === Public variable definitions ============================================================= */
 
 /* === Private variable definitions ============================================================ */
@@ -78,6 +79,13 @@ void NuevoSegundo(reloj_t reloj) {
         }
     }
 }
+
+uint32_t DataTimeASeg(uint8_t * data_time) {
+
+    uint32_t data_time_seg = (data_time[0] * 10 * 3600) + (data_time[1] * 3600) +
+                             (data_time[2] * 10 * 60) + (data_time[3] * 60);
+    return data_time_seg;
+}
 /* === Public function implementation ========================================================== */
 
 reloj_t ClockCreate(int ticks_por_segundo, callback_disparar funcion_de_disparo) {
@@ -104,6 +112,7 @@ bool SetClockTime(reloj_t reloj, const uint8_t * hora_nueva, int size) {
 
     return true; // hace falta retornar una confirmacion?
 }
+
 // En principio esta funcion es la que llama el systick en cada interrupcion
 void RelojNuevoTick(reloj_t reloj) {
 
@@ -131,40 +140,32 @@ bool GetAlarmTime(reloj_t reloj, uint8_t * alarma) {
 
 void VerificarAlarma(reloj_t reloj) {
 
-    if ((memcmp(reloj->hora_actual, reloj->alarma, sizeof(reloj->alarma)) == 0) &&
-        (reloj->hora_valida) && (reloj->alarma_habilitada)) {
+    // Convierto hora_actual y alarma a segundos, sumo el snooze a alarma y comparo.
+    uint32_t hora_actual = DataTimeASeg(reloj->hora_actual);
+    uint32_t alarma_actual = DataTimeASeg(reloj->alarma);
+    uint32_t nueva_alarma = alarma_actual + reloj->snooze_offset;
+    if (nueva_alarma >= 86400) {
+        nueva_alarma -= 86400;
+    }
+    if ((hora_actual == nueva_alarma) & (reloj->alarma_habilitada)) {
         reloj->disparar_alarma(reloj, true);
     }
 }
 
 void DeshabilitarAlarma(reloj_t reloj) {
+
     reloj->alarma_habilitada = false;
+    reloj->snooze_offset = 0;
 }
 
 void PosponerAlarma(reloj_t reloj, uint8_t minutos) {
 
-    uint16_t snooze_seg = 60 * minutos;
-    uint32_t tiempo_actual_seg = (reloj->alarma[0] * 10 * 3600) + (reloj->alarma[1] * 3600) +
-                                 (reloj->alarma[2] * 10 * 60) + (reloj->alarma[3] * 60);
-    uint32_t nuevo_tiempo_seg = snooze_seg + tiempo_actual_seg;
-
-    // Se controla que el total no sea mayor a 24 hs
-    if (nuevo_tiempo_seg >= 86400) {
-        nuevo_tiempo_seg -= 86400;
-    }
-
-    // se obtienen las horas que hay en nuevo_tiempo_seg
-    uint32_t nuevas_horas = (nuevo_tiempo_seg / 3600);
-
-    // se obtienen los minutos con las horas ya restadas
-    uint32_t nuevos_minutos = nuevo_tiempo_seg - (nuevas_horas * 3600);
-
-    reloj->alarma[0] = (nuevas_horas) / 10;
-    reloj->alarma[1] = (nuevas_horas) % 10;
-    reloj->alarma[2] = (nuevos_minutos / 60) / 10;
-    reloj->alarma[3] = ((nuevos_minutos) - ((reloj->alarma[2]) * 600));
-
+    reloj->snooze_offset += minutos * 60;
     reloj->disparar_alarma(reloj, false);
+}
+
+void CancelarAlarma(reloj_t reloj) {
+    reloj->snooze_offset = 0;
 }
 
 /* === End of documentation ==================================================================== */

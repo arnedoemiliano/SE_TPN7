@@ -81,12 +81,13 @@ void adelantar_horas(reloj_t reloj, int horas) {
 }
 // Prototipo de funcion para activar la alarma
 void activar_alarma(reloj_t reloj, bool act_desact) {
-
     if (act_desact == true) {
         alarma_activada = true;
     } else {
         alarma_activada = false;
+        // consultar: no se si esta bien esto:
     }
+
     //**********
     // Cuando envio la funcion como parametro, la variable alarma_activada es modificada aunque no
     // este definida en el modulo al que se la envía.
@@ -95,14 +96,12 @@ void activar_alarma(reloj_t reloj, bool act_desact) {
 /* === Test function implementation ============================================================ */
 
 void setUp(void) {
-
     reloj = ClockCreate(TICKS_PER_SECOND, activar_alarma);
     alarma_activada = false;
 }
 
 // Al inicializar el reloj está en 00:00 y con hora invalida.
 void test_inicio_hora_invalida(void) {
-
     // static const uint8_t hora_esperada[] = {0, 0, 0, 0, 0, 0};
     uint8_t hora[6] = {0xFF};
 
@@ -114,7 +113,6 @@ void test_inicio_hora_invalida(void) {
 // Al ajustar la hora el reloj queda en hora y es válida.
 
 void test_ajuste_validacion_hora(void) {
-
     // static const uint8_t hora_esperada[] = {1, 2, 3, 4, 0, 0};
     uint8_t hora[6];
 
@@ -128,7 +126,6 @@ void test_ajuste_validacion_hora(void) {
 // horas y un día completo.
 
 void test_hora_avanza_un_segundo(void) {
-
     // static const uint8_t hora_esperada[] = {0, 1, 0, 0, 0, 0}; // 1am
     uint8_t hora_actual[6];
 
@@ -164,7 +161,6 @@ void test_hora_avanza_un_segundo(void) {
 //‣ Fijar la hora de la alarma y consultarla.
 // asumo que la alarma nunca tendrá precision de segundos
 void test_fijar_consultar_alarma(void) {
-
     uint8_t alarma[4];
 
     TEST_ASSERT_TRUE(SetAlarmTime(reloj, alarma_esperada));
@@ -174,7 +170,6 @@ void test_fijar_consultar_alarma(void) {
 
 //‣ Fijar la alarma y avanzar el reloj para que suene.
 void test_avanzar_reloj_para_alarma(void) {
-
     TEST_ASSERT_TRUE(SetClockTime(reloj, hora_esperada, 4));
     TEST_ASSERT_TRUE(SetAlarmTime(reloj, alarma_esperada));
     adelantar_horas(reloj, 7);
@@ -188,7 +183,6 @@ void test_avanzar_reloj_para_alarma(void) {
 //‣ Fijar la alarma, deshabilitarla y avanzar el reloj para no suene.
 
 void test_deshabilitar_alarma(void) {
-
     uint8_t alarma[4];
 
     TEST_ASSERT_TRUE(SetClockTime(reloj, hora_esperada, 4));
@@ -203,7 +197,6 @@ void test_deshabilitar_alarma(void) {
 //‣ Hacer sonar la alarma y posponerla.
 
 void test_activar_posponer_alarma(void) {
-
     uint8_t alarma[4];
     // para probar cuando se pospone y se superan las 24 hs
     static const uint8_t hora_esperada_2[6] = {2, 3, 0, 0, 0, 0};
@@ -219,5 +212,6 @@ void test_activar_posponer_alarma(void) {
     TEST_ASSERT_FALSE(alarma_activada);
     adelantar_minutos(reloj, 12);
     TEST_ASSERT_TRUE(alarma_activada);
-    //
 }
+
+//‣ Hacer sonar la alarma y cancelarla hasta el otro dia.

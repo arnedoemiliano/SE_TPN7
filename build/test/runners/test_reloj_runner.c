@@ -84,13 +84,13 @@ static void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE l
 int main(void)
 {
   UnityBegin("test_reloj.c");
-  run_test(test_inicio_hora_invalida, "test_inicio_hora_invalida", 101);
-  run_test(test_ajuste_validacion_hora, "test_ajuste_validacion_hora", 113);
-  run_test(test_hora_avanza_un_segundo, "test_hora_avanza_un_segundo", 127);
+  run_test(test_inicio_hora_invalida, "test_inicio_hora_invalida", 104);
+  run_test(test_ajuste_validacion_hora, "test_ajuste_validacion_hora", 115);
+  run_test(test_hora_avanza_un_segundo, "test_hora_avanza_un_segundo", 128);
   run_test(test_fijar_consultar_alarma, "test_fijar_consultar_alarma", 163);
-  run_test(test_avanzar_reloj_para_alarma, "test_avanzar_reloj_para_alarma", 173);
-  run_test(test_deshabilitar_alarma, "test_deshabilitar_alarma", 187);
-  run_test(test_activar_posponer_alarma, "test_activar_posponer_alarma", 202);
+  run_test(test_avanzar_reloj_para_alarma, "test_avanzar_reloj_para_alarma", 172);
+  run_test(test_deshabilitar_alarma, "test_deshabilitar_alarma", 185);
+  run_test(test_activar_posponer_alarma, "test_activar_posponer_alarma", 199);
 
   return UnityEnd();
 }

@@ -59,6 +59,8 @@ void DeshabilitarAlarma(reloj_t reloj);
 
 void PosponerAlarma(reloj_t reloj, uint8_t tiempo);
 
+void CancelarAlarma(reloj_t reloj);
+
 /* === End of documentation ==================================================================== */
 
 #ifdef __cplusplus
